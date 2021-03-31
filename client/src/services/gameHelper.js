@@ -309,8 +309,16 @@ class GameHelper {
     let firstWaypoint = carrier.waypoints[0]
     let lastWaypoint = carrier.waypoints[carrier.waypoints.length - 1]
 
-    let firstWaypointStar = this.getStarById(game, firstWaypoint.source)
-    let lastWaypointStar = this.getStarById(game, lastWaypoint.source)
+    let firstWaypointStar
+    let lastWaypointStar
+    if( firstWaypoint.source === lastWaypoint.destination ) {
+      firstWaypointStar = this.getStarById(game, firstWaypoint.source)
+      lastWaypointStar = this.getStarById(game, lastWaypoint.source)
+    }
+    else {
+      firstWaypointStar = this.getStarById(game, firstWaypoint.destination)
+      lastWaypointStar = this.getStarById(game, lastWaypoint.destination)
+    }
 
     let distanceBetweenStars = this.getDistanceBetweenLocations(firstWaypointStar.location, lastWaypointStar.location)
     let hyperspaceDistance = this.getHyperspaceDistance(game, player, carrier)

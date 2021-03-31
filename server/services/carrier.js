@@ -339,6 +339,10 @@ module.exports = class CarrierService {
         // If the carrier waypoints are looped then append the
         // carrier waypoint back onto the waypoint stack.
         if (carrier.waypointsLooped) {
+            // if the carrier is coming from a star that is not a waypoint for the loop we 'pretend' that it's coming from the last destination
+            currentWaypoint.source = carrier.waypoints[carrier.waypoints.length - 1].destination;
+
+            // now the stack can be rotated
             carrier.waypoints.push(currentWaypoint);
         }
 

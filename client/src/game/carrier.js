@@ -210,6 +210,12 @@ class Carrier extends EventEmitter {
   }
 
   drawCarrierWaypoints () {
+    
+    for(let waypoint of this.data.waypoints) {
+      let source = this.stars.find(s => s.data._id === waypoint.source).data.name
+      let destin = this.stars.find(s => s.data._id === waypoint.destination).data.name
+      console.log(source+' to '+destin)
+    }
     this.graphics_waypoints.clear()
 
     let lineWidth = this.data.waypointsLooped ? 1 : 2
