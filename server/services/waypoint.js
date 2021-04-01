@@ -201,11 +201,19 @@ module.exports = class WaypointService {
         let effectiveTechs = this.technologyService.getCarrierEffectiveTechnologyLevels(game, carrier, null, true);
 
         // Check whether the last waypoint is in range of the first waypoint.
-        let firstWaypoint = carrier.waypoints[0];
-        let lastWaypoint = carrier.waypoints[carrier.waypoints.length - 1];
+        let firstWaypoint = carrier.waypoints[0]
+        let lastWaypoint = carrier.waypoints[carrier.waypoints.length - 1]
 
-        let firstWaypointStar = this.starService.getByObjectId(game, firstWaypoint.source);
-        let lastWaypointStar = this.starService.getByObjectId(game, lastWaypoint.source);
+        let firstWaypointStar
+        let lastWaypointStar
+        if( firstWaypoint.source === lastWaypoint.destination ) {
+          firstWaypointStar = this.starService.getByObjectId(game, firstWaypoint.source)
+          lastWaypointStar = this.starService.getByObjectId(game, lastWaypoint.source)
+        }
+        else {
+          firstWaypointStar = this.starService.getByObjectId(game, firstWaypoint.destination)
+          lastWaypointStar = this.starService.getByObjectId(game, lastWaypoint.destination)
+        }
 
         let distanceBetweenStars = this.starDistanceService.getDistanceBetweenStars(firstWaypointStar, lastWaypointStar);
         let hyperspaceDistance = this.distanceService.getHyperspaceDistance(game, effectiveTechs.hyperspace);
