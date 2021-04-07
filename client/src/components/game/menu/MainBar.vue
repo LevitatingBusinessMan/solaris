@@ -265,6 +265,47 @@ export default {
     }
   }
 }
+
+//Move window stuff
+window.addEventListener("load", function(event) {
+  dragElement(document.getElementsByClassName("menu-content")[0])
+})
+
+function dragElement(elmnt) {
+  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+  document.querySelector(".menu-page .row.pt-2").onmousedown = dragMouseDown;
+
+  function dragMouseDown(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // get the mouse cursor position at startup:
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    document.onmouseup = closeDragElement;
+    // call a function whenever the cursor moves:
+    document.onmousemove = elementDrag;
+  }
+
+  function elementDrag(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // calculate the new cursor position:
+    pos1 = pos3 - e.clientX;
+    pos2 = pos4 - e.clientY;
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    // set the element's new position:
+    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+  }
+
+  function closeDragElement() {
+    // stop moving when mouse button is released:
+    document.onmouseup = null;
+    document.onmousemove = null;
+  }
+}
+
 </script>
 
 <style scoped>
@@ -285,12 +326,18 @@ export default {
   height: 45px;
 }
 
-.menu {
-  position:absolute; /* This is a must otherwise the div overlays the map */
+/*.menu {
+  position:absolute;
   width: 473px;
   max-height: 100%;
   overflow: auto;
   overflow-x: hidden;
+}*/
+
+.menu-content {
+  /* width: 473px; */
+  z-index: 1;
+  position: absolute;
 }
 
 ::-webkit-scrollbar {
@@ -302,5 +349,13 @@ export default {
     .menu {
         width: 100%;
     }
+}
+</style>
+
+<style>
+/*This is in a child container*/
+.menu-page .row.pt-2 {
+  cursor: move !important;
+  z-index: 2;
 }
 </style>
